@@ -1,3 +1,9 @@
+## [1.18.1](https://github.com/appium/appium-mcp/compare/v1.18.0...v1.18.1) (2026-02-22)
+
+### Miscellaneous Chores
+
+* modify types ([#175](https://github.com/appium/appium-mcp/issues/175)) ([da7a336](https://github.com/appium/appium-mcp/commit/da7a33636ad179495100a34f7b635705069ca42c))
+
 ## [1.18.0](https://github.com/appium/appium-mcp/compare/v1.17.0...v1.18.0) (2026-02-22)
 
 ### Features
