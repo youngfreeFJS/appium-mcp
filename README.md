@@ -209,20 +209,16 @@ Based on benchmark testing, the following models are recommended:
 1. **Qwen3-VL-235B-A22B-Instruct**
    - Provider: Alibaba Cloud DashScope
    - Accuracy: 100%
-   - Speed: ~8.4s
+   - Speed: 12649ms
    - API: `https://dashscope.aliyuncs.com/compatible-mode/v1`
 
-2. **Gemini 2.0 Flash**
+2. **gemini-3-flash-preview**
    - Provider: Google AI
    - Accuracy: 100%
-   - Speed: ~10.5s
+   - Speed: 17353
    - API: `https://generativelanguage.googleapis.com/v1beta`
 
-3. **GPT-4o**
-   - Provider: OpenAI
-   - Accuracy: 100%
-   - Speed: ~18.2s
-   - API: `https://api.openai.com/v1`
+More models benchmarked can be found [here](https://github.com/appium-mcp/src/tests/benchmark_model/TEST_REPORT.md').
 
 **Performance Features:**
 
