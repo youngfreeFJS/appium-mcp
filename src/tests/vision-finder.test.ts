@@ -7,7 +7,14 @@
  * - Screenshot input: benchmark image.png read as base64
  */
 
-import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import {
+  describe,
+  test,
+  expect,
+  beforeEach,
+  afterEach,
+  jest,
+} from '@jest/globals';
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -24,7 +31,8 @@ const __dirname = dirname(__filename);
  * a realistic mobile UI screenshot.
  */
 const BENCHMARK_IMAGE_PATH = join(__dirname, 'benchmark_model', 'image.png');
-const BENCHMARK_IMAGE_BASE64 = readFileSync(BENCHMARK_IMAGE_PATH).toString('base64');
+const BENCHMARK_IMAGE_BASE64 =
+  readFileSync(BENCHMARK_IMAGE_PATH).toString('base64');
 
 // Realistic image dimensions matching the benchmark screenshot
 const IMAGE_WIDTH = 1080;
@@ -119,8 +127,12 @@ describe('AIVisionFinder', () => {
 
   describe('findElement – JSON bbox format (normalized coordinates)', () => {
     test('should return correct bbox, center and target for a typical search button', async () => {
-      const normalizedBBox: [number, number, number, number] = [800, 50, 950, 120];
-      postSpy.mockImplementation(mockModelResponse(jsonBBoxResponse('Search', normalizedBBox)) as any);
+      const normalizedBBox: [number, number, number, number] = [
+        800, 50, 950, 120,
+      ];
+      postSpy.mockImplementation(
+        mockModelResponse(jsonBBoxResponse('Search', normalizedBBox)) as any
+      );
 
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       const finder = new AIVisionFinder();
@@ -144,13 +156,22 @@ describe('AIVisionFinder', () => {
     });
 
     test('should call axios.post with correct endpoint and authorization header', async () => {
-      const normalizedBBox: [number, number, number, number] = [100, 100, 300, 200];
-      postSpy.mockImplementation(mockModelResponse(jsonBBoxResponse('Button', normalizedBBox)) as any);
+      const normalizedBBox: [number, number, number, number] = [
+        100, 100, 300, 200,
+      ];
+      postSpy.mockImplementation(
+        mockModelResponse(jsonBBoxResponse('Button', normalizedBBox)) as any
+      );
 
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       const finder = new AIVisionFinder();
 
-      await finder.findElement(BENCHMARK_IMAGE_BASE64, 'Click me button', IMAGE_WIDTH, IMAGE_HEIGHT);
+      await finder.findElement(
+        BENCHMARK_IMAGE_BASE64,
+        'Click me button',
+        IMAGE_WIDTH,
+        IMAGE_HEIGHT
+      );
 
       expect(postSpy).toHaveBeenCalledTimes(1);
       const [url, _body, config] = postSpy.mock.calls[0] as [
@@ -163,19 +184,34 @@ describe('AIVisionFinder', () => {
     });
 
     test('should send image as JPEG base64 data URL in the request body', async () => {
-      const normalizedBBox: [number, number, number, number] = [100, 100, 300, 200];
-      postSpy.mockImplementation(mockModelResponse(jsonBBoxResponse('Icon', normalizedBBox)) as any);
+      const normalizedBBox: [number, number, number, number] = [
+        100, 100, 300, 200,
+      ];
+      postSpy.mockImplementation(
+        mockModelResponse(jsonBBoxResponse('Icon', normalizedBBox)) as any
+      );
 
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       const finder = new AIVisionFinder();
 
-      await finder.findElement(BENCHMARK_IMAGE_BASE64, 'Home icon', IMAGE_WIDTH, IMAGE_HEIGHT);
+      await finder.findElement(
+        BENCHMARK_IMAGE_BASE64,
+        'Home icon',
+        IMAGE_WIDTH,
+        IMAGE_HEIGHT
+      );
 
       const [_url, body] = postSpy.mock.calls[0] as [
         string,
-        { messages: Array<{ content: Array<{ type: string; image_url?: { url: string } }> }> },
+        {
+          messages: Array<{
+            content: Array<{ type: string; image_url?: { url: string } }>;
+          }>;
+        },
       ];
-      const imageContent = body.messages[0].content.find((c) => c.type === 'image_url');
+      const imageContent = body.messages[0].content.find(
+        (c) => c.type === 'image_url'
+      );
       expect(imageContent).toBeDefined();
       expect(imageContent!.image_url!.url).toMatch(/^data:image\/jpeg;base64,/);
     });
@@ -185,8 +221,12 @@ describe('AIVisionFinder', () => {
 
   describe('findElement – array bbox format (normalized coordinates)', () => {
     test('should parse array format bbox and return correct result', async () => {
-      const normalizedBBox: [number, number, number, number] = [200, 300, 400, 500];
-      postSpy.mockImplementation(mockModelResponse(arrayBBoxResponse(normalizedBBox)) as any);
+      const normalizedBBox: [number, number, number, number] = [
+        200, 300, 400, 500,
+      ];
+      postSpy.mockImplementation(
+        mockModelResponse(arrayBBoxResponse(normalizedBBox)) as any
+      );
 
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       const finder = new AIVisionFinder();
@@ -212,8 +252,12 @@ describe('AIVisionFinder', () => {
     test('should use absolute pixel coordinates directly without conversion', async () => {
       process.env.AI_VISION_COORD_TYPE = 'absolute';
 
-      const absoluteBBox: [number, number, number, number] = [100, 200, 400, 350];
-      postSpy.mockImplementation(mockModelResponse(jsonBBoxResponse('Submit', absoluteBBox)) as any);
+      const absoluteBBox: [number, number, number, number] = [
+        100, 200, 400, 350,
+      ];
+      postSpy.mockImplementation(
+        mockModelResponse(jsonBBoxResponse('Submit', absoluteBBox)) as any
+      );
 
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       const finder = new AIVisionFinder();
@@ -237,8 +281,14 @@ describe('AIVisionFinder', () => {
     test('should clamp coordinates that exceed image boundaries (absolute mode)', async () => {
       process.env.AI_VISION_COORD_TYPE = 'absolute';
 
-      const outOfBoundsBBox: [number, number, number, number] = [0, 0, 1200, 2600];
-      postSpy.mockImplementation(mockModelResponse(jsonBBoxResponse('Full screen', outOfBoundsBBox)) as any);
+      const outOfBoundsBBox: [number, number, number, number] = [
+        0, 0, 1200, 2600,
+      ];
+      postSpy.mockImplementation(
+        mockModelResponse(
+          jsonBBoxResponse('Full screen', outOfBoundsBBox)
+        ) as any
+      );
 
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       const finder = new AIVisionFinder();
@@ -263,8 +313,12 @@ describe('AIVisionFinder', () => {
     test('should swap x1/x2 when x1 > x2 (absolute mode)', async () => {
       process.env.AI_VISION_COORD_TYPE = 'absolute';
 
-      const reversedXBBox: [number, number, number, number] = [500, 100, 200, 300];
-      postSpy.mockImplementation(mockModelResponse(jsonBBoxResponse('Element', reversedXBBox)) as any);
+      const reversedXBBox: [number, number, number, number] = [
+        500, 100, 200, 300,
+      ];
+      postSpy.mockImplementation(
+        mockModelResponse(jsonBBoxResponse('Element', reversedXBBox)) as any
+      );
 
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       const finder = new AIVisionFinder();
@@ -282,8 +336,12 @@ describe('AIVisionFinder', () => {
     test('should swap y1/y2 when y1 > y2 (absolute mode)', async () => {
       process.env.AI_VISION_COORD_TYPE = 'absolute';
 
-      const reversedYBBox: [number, number, number, number] = [100, 600, 400, 200];
-      postSpy.mockImplementation(mockModelResponse(jsonBBoxResponse('Element', reversedYBBox)) as any);
+      const reversedYBBox: [number, number, number, number] = [
+        100, 600, 400, 200,
+      ];
+      postSpy.mockImplementation(
+        mockModelResponse(jsonBBoxResponse('Element', reversedYBBox)) as any
+      );
 
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       const finder = new AIVisionFinder();
@@ -322,7 +380,12 @@ describe('AIVisionFinder', () => {
       const finder = new AIVisionFinder();
 
       await expect(
-        finder.findElement(BENCHMARK_IMAGE_BASE64, 'Search button', IMAGE_WIDTH, IMAGE_HEIGHT)
+        finder.findElement(
+          BENCHMARK_IMAGE_BASE64,
+          'Search button',
+          IMAGE_WIDTH,
+          IMAGE_HEIGHT
+        )
       ).rejects.toThrow(/Vision API call failed.*HTTP 401/);
     });
 
@@ -346,7 +409,12 @@ describe('AIVisionFinder', () => {
       const finder = new AIVisionFinder();
 
       await expect(
-        finder.findElement(BENCHMARK_IMAGE_BASE64, 'Search button', IMAGE_WIDTH, IMAGE_HEIGHT)
+        finder.findElement(
+          BENCHMARK_IMAGE_BASE64,
+          'Search button',
+          IMAGE_WIDTH,
+          IMAGE_HEIGHT
+        )
       ).rejects.toThrow(/Vision API call failed.*HTTP 429/);
     });
 
@@ -358,7 +426,12 @@ describe('AIVisionFinder', () => {
       const finder = new AIVisionFinder();
 
       await expect(
-        finder.findElement(BENCHMARK_IMAGE_BASE64, 'Search button', IMAGE_WIDTH, IMAGE_HEIGHT)
+        finder.findElement(
+          BENCHMARK_IMAGE_BASE64,
+          'Search button',
+          IMAGE_WIDTH,
+          IMAGE_HEIGHT
+        )
       ).rejects.toThrow('Network timeout');
     });
   });
@@ -367,25 +440,40 @@ describe('AIVisionFinder', () => {
 
   describe('findElement – unparseable model response', () => {
     test('should throw when model response contains no valid bbox', async () => {
-      postSpy.mockImplementation(mockModelResponse('I cannot find the element you are looking for.') as any);
+      postSpy.mockImplementation(
+        mockModelResponse(
+          'I cannot find the element you are looking for.'
+        ) as any
+      );
 
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       const finder = new AIVisionFinder();
 
       await expect(
-        finder.findElement(BENCHMARK_IMAGE_BASE64, 'Search button', IMAGE_WIDTH, IMAGE_HEIGHT)
+        finder.findElement(
+          BENCHMARK_IMAGE_BASE64,
+          'Search button',
+          IMAGE_WIDTH,
+          IMAGE_HEIGHT
+        )
       ).rejects.toThrow('Failed to parse bbox from vision model response');
     });
 
     test('should throw when model response has malformed JSON bbox (missing bbox_2d)', async () => {
-      const malformedResponse = 'Parameters: {"target": "Search", "coordinates": [100, 200]}';
+      const malformedResponse =
+        'Parameters: {"target": "Search", "coordinates": [100, 200]}';
       postSpy.mockImplementation(mockModelResponse(malformedResponse) as any);
 
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       const finder = new AIVisionFinder();
 
       await expect(
-        finder.findElement(BENCHMARK_IMAGE_BASE64, 'Search button', IMAGE_WIDTH, IMAGE_HEIGHT)
+        finder.findElement(
+          BENCHMARK_IMAGE_BASE64,
+          'Search button',
+          IMAGE_WIDTH,
+          IMAGE_HEIGHT
+        )
       ).rejects.toThrow('Failed to parse bbox from vision model response');
     });
   });
@@ -397,7 +485,9 @@ describe('AIVisionFinder', () => {
       // Force resize branch: imageMaxWidth=100 < IMAGE_WIDTH=1080
       process.env.AI_VISION_IMAGE_MAX_WIDTH = '100';
 
-      const normalizedBBox: [number, number, number, number] = [100, 100, 300, 200];
+      const normalizedBBox: [number, number, number, number] = [
+        100, 100, 300, 200,
+      ];
       postSpy.mockResolvedValue(
         buildAxiosResponse(jsonBBoxResponse('Button', normalizedBBox)) as any
       );
@@ -421,8 +511,12 @@ describe('AIVisionFinder', () => {
     test('should succeed without resize when image width is within imageMaxWidth limit', async () => {
       process.env.AI_VISION_IMAGE_MAX_WIDTH = '2000';
 
-      const normalizedBBox: [number, number, number, number] = [100, 100, 300, 200];
-      postSpy.mockImplementation(mockModelResponse(jsonBBoxResponse('Button', normalizedBBox)) as any);
+      const normalizedBBox: [number, number, number, number] = [
+        100, 100, 300, 200,
+      ];
+      postSpy.mockImplementation(
+        mockModelResponse(jsonBBoxResponse('Button', normalizedBBox)) as any
+      );
 
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       const finder = new AIVisionFinder();
@@ -450,8 +544,12 @@ describe('AIVisionFinder', () => {
     test('should call sharp resize when image width exceeds imageMaxWidth', async () => {
       process.env.AI_VISION_IMAGE_MAX_WIDTH = '100';
 
-      const normalizedBBox: [number, number, number, number] = [100, 100, 300, 200];
-      postSpy.mockImplementation(mockModelResponse(jsonBBoxResponse('Button', normalizedBBox)) as any);
+      const normalizedBBox: [number, number, number, number] = [
+        100, 100, 300, 200,
+      ];
+      postSpy.mockImplementation(
+        mockModelResponse(jsonBBoxResponse('Button', normalizedBBox)) as any
+      );
 
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       const finder = new AIVisionFinder();
@@ -473,8 +571,12 @@ describe('AIVisionFinder', () => {
     test('should NOT call sharp resize when image width is within imageMaxWidth', async () => {
       process.env.AI_VISION_IMAGE_MAX_WIDTH = '2000';
 
-      const normalizedBBox: [number, number, number, number] = [100, 100, 300, 200];
-      postSpy.mockImplementation(mockModelResponse(jsonBBoxResponse('Button', normalizedBBox)) as any);
+      const normalizedBBox: [number, number, number, number] = [
+        100, 100, 300, 200,
+      ];
+      postSpy.mockImplementation(
+        mockModelResponse(jsonBBoxResponse('Button', normalizedBBox)) as any
+      );
 
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       const finder = new AIVisionFinder();
@@ -492,10 +594,15 @@ describe('AIVisionFinder', () => {
 
     test('should fall back to original image when sharp compression throws', async () => {
       // Make toBuffer throw to simulate compression failure
-      mockSharpInstance.toBufferImpl = () => Promise.reject(new Error('sharp: out of memory'));
+      mockSharpInstance.toBufferImpl = () =>
+        Promise.reject(new Error('sharp: out of memory'));
 
-      const normalizedBBox: [number, number, number, number] = [100, 100, 300, 200];
-      postSpy.mockImplementation(mockModelResponse(jsonBBoxResponse('Button', normalizedBBox)) as any);
+      const normalizedBBox: [number, number, number, number] = [
+        100, 100, 300, 200,
+      ];
+      postSpy.mockImplementation(
+        mockModelResponse(jsonBBoxResponse('Button', normalizedBBox)) as any
+      );
 
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       const finder = new AIVisionFinder();
@@ -514,9 +621,15 @@ describe('AIVisionFinder', () => {
       // The image sent to the API should be the original base64 (fallback path)
       const [_url, body] = postSpy.mock.calls[0] as [
         string,
-        { messages: Array<{ content: Array<{ type: string; image_url?: { url: string } }> }> },
+        {
+          messages: Array<{
+            content: Array<{ type: string; image_url?: { url: string } }>;
+          }>;
+        },
       ];
-      const imageContent = body.messages[0].content.find((c) => c.type === 'image_url');
+      const imageContent = body.messages[0].content.find(
+        (c) => c.type === 'image_url'
+      );
       // In fallback mode the original PNG base64 is used directly
       expect(imageContent!.image_url!.url).toContain('base64,');
     });
@@ -530,14 +643,23 @@ describe('AIVisionFinder', () => {
 
       // x1 === x2 after clamping: both at the right edge of the image
       // Use x1=1079, x2=1079 → after clamp x1=min(1079,1079)=1079, x2=min(1079,1080)=1079 → x1>=x2
-      const zeroWidthBBox: [number, number, number, number] = [1079, 100, 1079, 300];
-      postSpy.mockImplementation(mockModelResponse(jsonBBoxResponse('Edge', zeroWidthBBox)) as any);
+      const zeroWidthBBox: [number, number, number, number] = [
+        1079, 100, 1079, 300,
+      ];
+      postSpy.mockImplementation(
+        mockModelResponse(jsonBBoxResponse('Edge', zeroWidthBBox)) as any
+      );
 
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       const finder = new AIVisionFinder();
 
       await expect(
-        finder.findElement(BENCHMARK_IMAGE_BASE64, 'Edge element', IMAGE_WIDTH, IMAGE_HEIGHT)
+        finder.findElement(
+          BENCHMARK_IMAGE_BASE64,
+          'Edge element',
+          IMAGE_WIDTH,
+          IMAGE_HEIGHT
+        )
       ).rejects.toThrow(/Invalid bbox coordinates after conversion/);
     });
   });
@@ -547,19 +669,32 @@ describe('AIVisionFinder', () => {
   describe('findElement – prompt content', () => {
     test('should include the instruction and image dimensions in the prompt', async () => {
       const instruction = 'yellow search button at the top';
-      const normalizedBBox: [number, number, number, number] = [100, 50, 300, 150];
-      postSpy.mockImplementation(mockModelResponse(jsonBBoxResponse('Search', normalizedBBox)) as any);
+      const normalizedBBox: [number, number, number, number] = [
+        100, 50, 300, 150,
+      ];
+      postSpy.mockImplementation(
+        mockModelResponse(jsonBBoxResponse('Search', normalizedBBox)) as any
+      );
 
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       const finder = new AIVisionFinder();
 
-      await finder.findElement(BENCHMARK_IMAGE_BASE64, instruction, IMAGE_WIDTH, IMAGE_HEIGHT);
+      await finder.findElement(
+        BENCHMARK_IMAGE_BASE64,
+        instruction,
+        IMAGE_WIDTH,
+        IMAGE_HEIGHT
+      );
 
       const [_url, body] = postSpy.mock.calls[0] as [
         string,
-        { messages: Array<{ content: Array<{ type: string; text?: string }> }> },
+        {
+          messages: Array<{ content: Array<{ type: string; text?: string }> }>;
+        },
       ];
-      const textContent = body.messages[0].content.find((c) => c.type === 'text');
+      const textContent = body.messages[0].content.find(
+        (c) => c.type === 'text'
+      );
       expect(textContent).toBeDefined();
       expect(textContent!.text).toContain(instruction);
       expect(textContent!.text).toContain(String(IMAGE_WIDTH));
@@ -569,13 +704,22 @@ describe('AIVisionFinder', () => {
     test('should use the configured model name in the API request', async () => {
       process.env.AI_VISION_MODEL = 'custom-vision-model-v2';
 
-      const normalizedBBox: [number, number, number, number] = [100, 100, 300, 200];
-      postSpy.mockImplementation(mockModelResponse(jsonBBoxResponse('Button', normalizedBBox)) as any);
+      const normalizedBBox: [number, number, number, number] = [
+        100, 100, 300, 200,
+      ];
+      postSpy.mockImplementation(
+        mockModelResponse(jsonBBoxResponse('Button', normalizedBBox)) as any
+      );
 
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       const finder = new AIVisionFinder();
 
-      await finder.findElement(BENCHMARK_IMAGE_BASE64, 'Search button', IMAGE_WIDTH, IMAGE_HEIGHT);
+      await finder.findElement(
+        BENCHMARK_IMAGE_BASE64,
+        'Search button',
+        IMAGE_WIDTH,
+        IMAGE_HEIGHT
+      );
 
       const [_url, body] = postSpy.mock.calls[0] as [string, { model: string }];
       expect(body.model).toBe('custom-vision-model-v2');

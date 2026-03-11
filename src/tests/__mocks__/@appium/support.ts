@@ -57,7 +57,8 @@ export const mockSharpInstance: MockSharpInstance = {
   },
   reset() {
     this.resizeCalls = [];
-    this.toBufferImpl = () => Promise.resolve(Buffer.from('mock-compressed-image'));
+    this.toBufferImpl = () =>
+      Promise.resolve(Buffer.from('mock-compressed-image'));
   },
 };
 
