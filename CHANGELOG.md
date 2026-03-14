@@ -1,3 +1,9 @@
+## [1.27.0](https://github.com/appium/appium-mcp/compare/v1.26.0...v1.27.0) (2026-03-14)
+
+### Features
+
+* add geolocation tools (set, get, reset) ([#206](https://github.com/appium/appium-mcp/issues/206)) ([78bcca7](https://github.com/appium/appium-mcp/commit/78bcca78f2eb6ede8c667e82a2b23a898960f32b))
+
 ## [1.26.0](https://github.com/appium/appium-mcp/compare/v1.25.0...v1.26.0) (2026-03-11)
 
 ### Features
