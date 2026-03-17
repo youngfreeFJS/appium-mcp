@@ -1,3 +1,9 @@
+## [1.27.1](https://github.com/appium/appium-mcp/compare/v1.27.0...v1.27.1) (2026-03-17)
+
+### Miscellaneous Chores
+
+* remove unused deps ([#214](https://github.com/appium/appium-mcp/issues/214)) ([a9215b9](https://github.com/appium/appium-mcp/commit/a9215b90d6e511e2c3a7ad8be646482b1012b8e1))
+
 ## [1.27.0](https://github.com/appium/appium-mcp/compare/v1.26.0...v1.27.0) (2026-03-14)
 
 ### Features
