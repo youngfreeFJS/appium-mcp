@@ -15,35 +15,28 @@ export interface AIVisionConfig {
 }
 
 /**
+ * Bounding box type: [x1, y1, x2, y2]
+ * - x1, y1: top-left corner coordinates
+ * - x2, y2: bottom-right corner coordinates
+ */
+export type BBox = [x1: number, y1: number, x2: number, y2: number];
+
+/**
  * Bounding box coordinates interface
  * Matches the format returned by vision models
  */
 export interface BBoxCoordinates {
   target: string;
-  bbox_2d: [number, number, number, number];
+  bbox_2d: BBox;
 }
 
 /**
  * AI element finding result interface
  */
 export interface AIFindResult {
-  bbox: [number, number, number, number];
+  bbox: BBox;
   center: { x: number; y: number };
   target: string;
   annotatedImagePath?: string;
 }
 
-/**
- * Cache entry interface for result caching
- */
-export interface CacheEntry {
-  result: AIFindResult;
-  timestamp: number;
-}
-
-/**
- * Cache storage interface
- */
-export interface CacheStorage {
-  [key: string]: CacheEntry;
-}

@@ -80,8 +80,8 @@ describe('AIVisionFinder', () => {
   beforeEach(() => {
     postSpy = jest.spyOn(axios, 'post');
 
-    process.env.API_BASE_URL = 'https://mock-api.example.com/v1';
-    process.env.API_TOKEN = 'mock-token-12345';
+    process.env.AI_VISION_API_BASE_URL = 'https://mock-api.example.com/v1';
+    process.env.AI_VISION_API_KEY = 'mock-token-12345';
     process.env.AI_VISION_MODEL = 'Qwen3-VL-235B-A22B-Instruct';
     process.env.AI_VISION_COORD_TYPE = 'normalized';
     process.env.AI_VISION_IMAGE_MAX_WIDTH = '1080';
@@ -101,19 +101,19 @@ describe('AIVisionFinder', () => {
   // ── Constructor ─────────────────────────────────────────────────────────────
 
   describe('constructor', () => {
-    test('should throw when API_BASE_URL is missing', async () => {
-      delete process.env.API_BASE_URL;
+    test('should throw when AI_VISION_API_BASE_URL is missing', async () => {
+      delete process.env.AI_VISION_API_BASE_URL;
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       expect(() => new AIVisionFinder()).toThrow(
-        'API_BASE_URL environment variable is required for AI vision finding'
+        'AI_VISION_API_BASE_URL environment variable is required for AI vision finding'
       );
     });
 
-    test('should throw when API_TOKEN is missing', async () => {
-      delete process.env.API_TOKEN;
+    test('should throw when AI_VISION_API_KEY is missing', async () => {
+      delete process.env.AI_VISION_API_KEY;
       const { AIVisionFinder } = await import('../ai-finder/vision-finder.js');
       expect(() => new AIVisionFinder()).toThrow(
-        'API_TOKEN environment variable is required for AI vision finding'
+        'AI_VISION_API_KEY environment variable is required for AI vision finding'
       );
     });
 

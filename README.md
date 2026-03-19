@@ -188,8 +188,8 @@ Configure AI-powered element finding using vision models. This feature allows yo
   "appium-mcp": {
     "env": {
       "ANDROID_HOME": "/path/to/android/sdk",
-      "API_BASE_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-      "API_TOKEN": "your_api_key_here"
+      "AI_VISION_API_BASE_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+      "AI_VISION_API_TOKEN": "your_api_key_here"
     }
   }
 }
@@ -218,13 +218,13 @@ Based on benchmark testing, the following models are recommended:
    - Speed: 17353
    - API: `https://generativelanguage.googleapis.com/v1beta`
 
-More models benchmarked can be found [here](https://github.com/appium-mcp/src/tests/benchmark_model/TEST_REPORT.md').
+More models benchmarked can be found [here](src/tests/benchmark_model/TEST_REPORT.md).
 
 **Performance Features:**
 
 - **Image Compression**: Automatically compresses screenshots to reduce API latency and token costs (50-80% size reduction)
-- **Result Caching**: Caches results for 5 minutes to avoid redundant API calls for identical queries
-- **Coordinate Scaling**: Automatically scales coordinates from compressed images back to original dimensions for accurate tapping
+- **Result Caching**: Caches results for 5 minutes using a module-level LRU cache (max 50 entries) that persists across tool calls, avoiding redundant API calls for identical screenshot + instruction pairs
+- **Coordinate Handling**: In `normalized` mode (default), the model returns 0–1000 range coordinates that are automatically scaled to absolute pixel coordinates using the original image dimensions — independent of any image compression. In `absolute` mode, image resizing is disabled so the model's returned pixel coordinates always map directly to the original screen dimensions.
 
 ### Performance Optimization
 

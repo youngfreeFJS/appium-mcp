@@ -71,8 +71,8 @@ AI_VISION_IMAGE_QUALITY=80      # JPEG quality 1-100 (default: 80)
     "env": {
       "ANDROID_HOME": "/Users/xyz/Library/Android/sdk",
       "AI_VISION_MODEL": "Qwen3-VL-235B-A22B-Instruct",
-      "API_BASE_URL": "https://api.your-provider.com",
-      "API_TOKEN": "your_api_key_here",
+      "AI_VISION_API_BASE_URL": "https://api.your-provider.com",
+      "AI_VISION_API_TOKEN": "your_api_key_here",
       "AI_VISION_COORD_TYPE": "normalized"
     }
   }
@@ -176,7 +176,7 @@ class AIVisionFinder {
       const imageBuffer = Buffer.from(base64Image, 'base64');
       
       // Use @appium/support imageUtil for compression
-      const { sharp } = imageUtil;
+      const sharp = imageUtil.requireSharp();
       let sharpInstance = sharp(imageBuffer);
       
       // Resize if image is too large

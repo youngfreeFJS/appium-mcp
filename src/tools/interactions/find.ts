@@ -6,6 +6,16 @@ import { imageUtil } from '@appium/support';
 import { AIVisionFinder } from '../../ai-finder/vision-finder.js';
 import log from '../../logger.js';
 
+// Module-level singleton: ensures the LRU cache persists across tool calls.
+// Creating a new AIVisionFinder() on every call would reset the cache each time.
+let _finderInstance: AIVisionFinder | null = null;
+function getAIVisionFinder(): AIVisionFinder {
+  if (!_finderInstance) {
+    _finderInstance = new AIVisionFinder();
+  }
+  return _finderInstance;
+}
+
 export const findElementSchema = z.object({
   strategy: z.enum([
     'xpath',
@@ -23,7 +33,9 @@ export const findElementSchema = z.object({
     .string()
     .optional()
     .describe(
-      'The selector to find the element (required for traditional strategies)'
+      'The selector to find the element. ' +
+        'REQUIRED for all traditional strategies (xpath, id, name, class name, accessibility id, css selector, -android uiautomator, -ios predicate string, -ios class chain). ' +
+        'NOT required when strategy is "ai_instruction" — use ai_instruction field instead.'
     ),
   ai_instruction: z
     .string()
@@ -49,8 +61,8 @@ export default function findElement(server: FastMCP): void {
 - ai_instruction: "settings icon in top-right corner"
 
 **Environment Variables Required for AI Mode**:
-- API_BASE_URL: Vision model API endpoint (required)
-- API_TOKEN: API authentication key (required)
+- AI_VISION_API_BASE_URL: Vision model API endpoint (required)
+- AI_VISION_API_KEY: API authentication key (required)
 - AI_VISION_MODEL: Model name (optional, defaults to Qwen3-VL-235B-A22B-Instruct)
 - AI_VISION_COORD_TYPE: Coordinate type (optional, defaults to normalized)`,
     parameters: findElementSchema,
@@ -115,8 +127,8 @@ export default function findElement(server: FastMCP): void {
 
         const { width, height } = metadata;
 
-        // Step 3: Find element using AI
-        const finder = new AIVisionFinder();
+        // Step 3: Find element using AI (singleton to preserve LRU cache across calls)
+        const finder = getAIVisionFinder();
         const result = await finder.findElement(
           screenshotBase64,
           args.ai_instruction,
