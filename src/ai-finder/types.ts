@@ -39,4 +39,3 @@ export interface AIFindResult {
   target: string;
   annotatedImagePath?: string;
 }
-

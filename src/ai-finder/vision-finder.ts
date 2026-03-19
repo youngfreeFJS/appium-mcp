@@ -228,7 +228,10 @@ export class AIVisionFinder {
         `AI Vision: Image compressed: ${originalSize} → ${compressedSize} bytes (${reduction}% reduction)`
       );
 
-      return { base64: compressedBuffer.toString('base64'), mimeType: 'image/jpeg' };
+      return {
+        base64: compressedBuffer.toString('base64'),
+        mimeType: 'image/jpeg',
+      };
     } catch (error) {
       // If compression fails, return original PNG image with correct MIME type.
       // Appium screenshots are always PNG, so we must not claim image/jpeg here.
@@ -361,7 +364,9 @@ Parameters: {"target": "Search", "bbox_2d": [100, 200, 300, 280]}
       // Try to match JSON format bbox.
       // Use a key-order-independent regex: locate the object by the presence of
       // "bbox_2d": [...] regardless of whether "target" comes before or after it.
-      const jsonMatch = response.match(/\{[^}]*"bbox_2d"\s*:\s*\[[^\]]+\][^}]*\}/);
+      const jsonMatch = response.match(
+        /\{[^}]*"bbox_2d"\s*:\s*\[[^\]]+\][^}]*\}/
+      );
       if (jsonMatch) {
         const parsed = JSON.parse(jsonMatch[0]);
         if (
@@ -412,11 +417,7 @@ Parameters: {"target": "Search", "bbox_2d": [100, 200, 300, 280]}
    *   as-is and are NOT automatically scaled back to the original resolution.
    *   Use this mode only if the model explicitly outputs absolute pixel values.
    */
-  private convertCoordinates(
-    bbox: BBox,
-    width: number,
-    height: number
-  ): BBox {
+  private convertCoordinates(bbox: BBox, width: number, height: number): BBox {
     let [x1, y1, x2, y2] = bbox;
 
     // Process according to model's configured coordinate type (matches benchmark_model.ts)
