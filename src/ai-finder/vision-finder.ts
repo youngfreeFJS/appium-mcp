@@ -260,6 +260,7 @@ export class AIVisionFinder {
 - y2: Bottom edge
 - Origin (0,0): Top-left corner
 - Max (1000,1000): Bottom-right corner
+- Image Width: ${width} pixels, Image Height: ${height} pixels (for reference only)
 - **MUST use integer values between 0-1000**`
       : `**BBox Coordinates (ABSOLUTE PIXEL COORDINATES)**
 - x1: Left edge X coordinate (top-left corner of element)
