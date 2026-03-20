@@ -265,6 +265,8 @@ MCP Appium provides a comprehensive set of tools organized into the following ca
 | `appium_drag_and_drop` | Perform a drag and drop gesture from a source location to a target location (supports element-to-element, element-to-coordinates, coordinates-to-element, and coordinates-to-coordinates) |
 | `appium_set_value`    | Enter text into an input field                                                               |
 | `appium_get_text`     | Get text content from an element                                                             |
+| `appium_get_clipboard` | Get the current clipboard content as plain text from the device            |
+| `appium_set_clipboard` | Set the device clipboard to the provided plain text                        |
 | `appium_handle_alert` | Accept or dismiss system/permission alerts, or click a dialog button by label |
 
 ### Screen & Navigation

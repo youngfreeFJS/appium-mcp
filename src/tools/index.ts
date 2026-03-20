@@ -40,6 +40,7 @@ import getText from './interactions/get-text.js';
 import getActiveElement from './interactions/active-element.js';
 import getPageSource from './interactions/get-page-source.js';
 import { getOrientation, setOrientation } from './interactions/orientation.js';
+import clipboard from './interactions/clipboard.js';
 import handleAlert from './interactions/handle-alert.js';
 import { screenshot, elementScreenshot } from './interactions/screenshot.js';
 import activateApp from './app-management/activate-app.js';
@@ -151,6 +152,7 @@ export default function registerTools(server: FastMCP): void {
   pressKey(server);
   setValue(server);
   getText(server);
+  clipboard(server);
   getActiveElement(server);
   getPageSource(server);
   getOrientation(server);
