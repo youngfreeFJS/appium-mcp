@@ -326,7 +326,9 @@ export async function getClipboard(driver: DriverInstance): Promise<string> {
     // Android `mobile: getClipboard` also returns base64-encoded content
     const result = await driver.execute('mobile: getClipboard', {});
     const base64Content = String(result ?? '');
-    if (!base64Content) { return ''; }
+    if (!base64Content) {
+      return '';
+    }
     return Buffer.from(base64Content, 'base64').toString('utf-8');
   } else if (isXCUITestDriverSession(driver)) {
     // XCUITest returns base64-encoded content
@@ -334,12 +336,16 @@ export async function getClipboard(driver: DriverInstance): Promise<string> {
       encoding: 'plaintext',
     });
     const base64Content = String(result ?? '');
-    if (!base64Content) { return ''; }
+    if (!base64Content) {
+      return '';
+    }
     return Buffer.from(base64Content, 'base64').toString('utf-8');
   }
   const result = await (driver as Client).executeScript('mobile: getClipboard', [{}]);
   const base64Content = String(result ?? '');
-  if (!base64Content) { return ''; }
+  if (!base64Content) {
+    return '';
+  }
   return Buffer.from(base64Content, 'base64').toString('utf-8');
 }
 
