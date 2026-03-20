@@ -17,7 +17,7 @@ export default function clipboard(server: FastMCP): void {
   // ─── Get Clipboard ────────────────────────────────────────────────────────
 
   server.addTool({
-    name: 'appium_get_clipboard',
+    name: 'appium_mobile_get_clipboard',
     description:
       'Get the current clipboard content as plain text from the device. ' +
       'Works on Android (UiAutomator2) and iOS (XCUITest). ' +
@@ -73,7 +73,7 @@ export default function clipboard(server: FastMCP): void {
   });
 
   server.addTool({
-    name: 'appium_set_clipboard',
+    name: 'appium_mobile_set_clipboard',
     description:
       'Set the device clipboard to the provided plain text. ' +
       'Works on Android (UiAutomator2) and iOS (XCUITest). ' +

@@ -311,55 +311,28 @@ export async function setOrientation(
 /**
  * Get the current clipboard content as plain text.
  *
- * On Android, uses the `mobile: getClipboard` execute command.
- * On iOS (XCUITest), uses the `mobile: getClipboard` execute command with
- * `plaintext` encoding; the driver returns a base64-encoded string which is
- * decoded here before returning.
- * For remote WebDriver clients the same mobile command is forwarded via
- * `executeScript`.
+ * Uses the `mobile: getClipboard` execute command which works uniformly
+ * across Android (UiAutomator2), iOS (XCUITest), and remote WebDriver
+ * clients. The driver returns a base64-encoded string which is decoded
+ * before returning.
  *
  * @param driver - The driver instance to query.
  * @returns The clipboard content as a plain string (may be empty).
  */
 export async function getClipboard(driver: DriverInstance): Promise<string> {
-  if (isAndroidUiautomator2DriverSession(driver)) {
-    // Android `mobile: getClipboard` also returns base64-encoded content
-    const result = await driver.execute('mobile: getClipboard', {});
-    const base64Content = String(result ?? '');
-    if (!base64Content) {
-      return '';
-    }
-    return Buffer.from(base64Content, 'base64').toString('utf-8');
-  } else if (isXCUITestDriverSession(driver)) {
-    // XCUITest returns base64-encoded content
-    const result = await driver.execute('mobile: getClipboard', {
-      encoding: 'plaintext',
-    });
-    const base64Content = String(result ?? '');
-    if (!base64Content) {
-      return '';
-    }
-    return Buffer.from(base64Content, 'base64').toString('utf-8');
-  }
-  const result = await (driver as Client).executeScript(
-    'mobile: getClipboard',
-    [{}]
-  );
-  const base64Content = String(result ?? '');
-  if (!base64Content) {
+  const result = await execute(driver, 'mobile: getClipboard', {});
+  if (!result) {
     return '';
   }
-  return Buffer.from(base64Content, 'base64').toString('utf-8');
+  return Buffer.from(String(result), 'base64').toString('utf-8');
 }
 
 /**
  * Set the clipboard content to the provided plain text.
  *
- * On Android, uses the `mobile: setClipboard` execute command with
- * `contentType` set to `plaintext`.
- * On iOS (XCUITest), the content must be base64-encoded before sending.
- * For remote WebDriver clients the same mobile command is forwarded via
- * `executeScript`.
+ * Uses the `mobile: setClipboard` execute command which works uniformly
+ * across Android (UiAutomator2), iOS (XCUITest), and remote WebDriver
+ * clients. The content is base64-encoded before sending.
  *
  * @param driver - The driver instance to use.
  * @param content - Plain text string to write to the clipboard.
@@ -368,23 +341,9 @@ export async function setClipboard(
   driver: DriverInstance,
   content: string
 ): Promise<void> {
-  // Both Android and iOS require base64-encoded content for mobile: setClipboard
   const base64Content = Buffer.from(content, 'utf-8').toString('base64');
-
-  if (isAndroidUiautomator2DriverSession(driver)) {
-    await driver.execute('mobile: setClipboard', {
-      content: base64Content,
-      contentType: 'plaintext',
-    });
-    return;
-  } else if (isXCUITestDriverSession(driver)) {
-    await driver.execute('mobile: setClipboard', {
-      content: base64Content,
-      encoding: 'plaintext',
-    });
-    return;
-  }
-  await (driver as Client).executeScript('mobile: setClipboard', [
-    { content: base64Content, contentType: 'plaintext' },
-  ]);
+  await execute(driver, 'mobile: setClipboard', {
+    content: base64Content,
+    contentType: 'plaintext',
+  });
 }
