@@ -1,3 +1,9 @@
+## [1.34.2](https://github.com/appium/appium-mcp/compare/v1.34.1...v1.34.2) (2026-03-23)
+
+### Miscellaneous Chores
+
+* add zip/unzip asserts to distribute them in small size ([#227](https://github.com/appium/appium-mcp/issues/227)) ([126f2dd](https://github.com/appium/appium-mcp/commit/126f2dd7ede8696853eb887d7310d6aa22ea8e68))
+
 ## [1.34.1](https://github.com/appium/appium-mcp/compare/v1.34.0...v1.34.1) (2026-03-23)
 
 ### Miscellaneous Chores
