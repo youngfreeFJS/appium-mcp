@@ -1,3 +1,9 @@
+## [1.34.4](https://github.com/appium/appium-mcp/compare/v1.34.3...v1.34.4) (2026-03-23)
+
+### Miscellaneous Chores
+
+* refer to src/resources/dubmodules for the docs search ([aa35115](https://github.com/appium/appium-mcp/commit/aa35115b71e6db35632c580fcea7dc9ad04dbfb4))
+
 ## [1.34.3](https://github.com/appium/appium-mcp/compare/v1.34.2...v1.34.3) (2026-03-23)
 
 ### Miscellaneous Chores
