@@ -1,3 +1,9 @@
+## [1.37.0](https://github.com/appium/appium-mcp/compare/v1.36.0...v1.37.0) (2026-03-27)
+
+### Features
+
+* **interations:** implement get alert text ([#230](https://github.com/appium/appium-mcp/issues/230)) ([f222cd1](https://github.com/appium/appium-mcp/commit/f222cd1ed18f201775a2a904cadaabc1a97f537d))
+
 ## [1.36.0](https://github.com/appium/appium-mcp/compare/v1.35.0...v1.36.0) (2026-03-26)
 
 ### Features
