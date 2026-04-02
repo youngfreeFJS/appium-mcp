@@ -1,3 +1,9 @@
+## [1.41.0](https://github.com/appium/appium-mcp/compare/v1.40.0...v1.41.0) (2026-04-02)
+
+### Features
+
+* **list-apps:** allow fetching system apps on iOS ([#238](https://github.com/appium/appium-mcp/issues/238)) ([dd16581](https://github.com/appium/appium-mcp/commit/dd16581b81b598c7baf0b18f2c7f3753a498e89a))
+
 ## [1.40.0](https://github.com/appium/appium-mcp/compare/v1.39.0...v1.40.0) (2026-04-01)
 
 ### Features
